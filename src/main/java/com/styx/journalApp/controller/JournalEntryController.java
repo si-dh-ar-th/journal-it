@@ -1,6 +1,5 @@
 package com.styx.journalApp.controller;
 
-import com.styx.journalApp.JournalApplication;
 import com.styx.journalApp.entity.JournalEntry;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +12,7 @@ import java.util.Map;
 @RequestMapping("/journal")
 public class JournalEntryController {
 
-    private Map<Long, JournalEntry> journalEntries = new HashMap<>();
+    private Map<String, JournalEntry> journalEntries = new HashMap<>();
 
     @GetMapping
     public List<JournalEntry> getAll(){

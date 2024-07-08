@@ -1,0 +1,8 @@
+package com.styx.journalApp.repository;
+
+import com.styx.journalApp.entity.JournalEntry;
+import org.springframework.data.mongodb.repository.MongoRepository;
+
+public interface JournalEntryRepository extends MongoRepository<JournalEntry, String> {
+
+}
