@@ -1,28 +1,32 @@
 package com.styx.journalApp.entity;
 
-import java.util.Date;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
+
+@Document
 public class JournalEntry {
-
-    private String id;
+    @Id
+    private ObjectId id;
     private String name;
     private String description;
+    private LocalDateTime date;
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
-    private Date date;
-
-    public String getId() {
+    public ObjectId getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(ObjectId id) {
         this.id = id;
     }
 
