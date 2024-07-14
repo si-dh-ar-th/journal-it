@@ -40,8 +40,6 @@ public class JournalEntryController {
     @PostMapping
     public  ResponseEntity<?> createJournal(@RequestBody JournalEntry journalEntry){
         try {
-            if(journalEntry.getTitle() == null || journalEntry.getTitle().isEmpty()) throw new Exception();
-            journalEntry.setDate(LocalDateTime.now());
             journalEntryService.saveEntry(journalEntry);
             return new ResponseEntity<>(journalEntry, HttpStatus.CREATED);
         }catch (Exception e){
