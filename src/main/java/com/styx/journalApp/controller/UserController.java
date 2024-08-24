@@ -1,20 +1,16 @@
 package com.styx.journalApp.controller;
 
-import com.styx.journalApp.entity.JournalEntry;
 import com.styx.journalApp.entity.User;
-import com.styx.journalApp.service.JournalEntryService;
 import com.styx.journalApp.service.UserService;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
@@ -29,11 +25,11 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/id/{userId}")
-    public ResponseEntity<User> getUserById(@PathVariable ObjectId userId){
-        Optional<User> entryById = userService.getEntryById(userId);
-        if(entryById.isPresent()){
-            return new ResponseEntity<>(entryById.get(), HttpStatus.OK);
+    @GetMapping("/{userName}")
+    public ResponseEntity<User> getUserByUserName(@PathVariable String userName){
+        User user = userService.findByUserName(userName);
+        if(user != null){
+            return new ResponseEntity<>(user, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
@@ -48,26 +44,26 @@ public class UserController {
         }
     }
 
-    @PutMapping("/id/{userId}")
-    public ResponseEntity<User> updateUserById(@PathVariable ObjectId journalId, @RequestBody User newEntry){
-        User oldEntry = userService.getEntryById(journalId).orElse(null);
-        if(oldEntry != null){
-            oldEntry.setUserName(newEntry.getUserName() != null && !newEntry.getUserName().isEmpty() ? newEntry.getUserName() : oldEntry.getUserName());
-            oldEntry.setPassword(newEntry.getPassword() != null && !newEntry.getPassword().isEmpty() ? newEntry.getPassword() : oldEntry.getPassword());
-            userService.saveEntry(oldEntry);
-            return new ResponseEntity<>(oldEntry, HttpStatus.OK);
+    @PutMapping("/{userName}")
+    public ResponseEntity<User> updateUserById(@PathVariable String userName, @RequestBody User newData){
+        User oldData = userService.findByUserName(userName);
+        if(oldData != null){
+            oldData.setUserName(!newData.getUserName().isEmpty() ? newData.getUserName() : oldData.getUserName());
+            oldData.setPassword(!newData.getPassword().isEmpty() ? newData.getPassword() : oldData.getPassword());
+            userService.saveEntry(oldData);
+            return new ResponseEntity<>(oldData, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @DeleteMapping("/id/{userId}")
-    public ResponseEntity<?> deleteUser(@PathVariable ObjectId userId){
-        User entryById = userService.getEntryById(userId).orElse(null);
-        if(entryById != null){
-            userService.deleteEntryById(userId);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
+//    @DeleteMapping("/{userName}")
+//    public ResponseEntity<?> deleteUser(@PathVariable String userName){
+//        User user = userService.findByUserName(userName);
+//        if(user != null){
+//            userService.deleteEntryById(user.getId());
+//            return new ResponseEntity<>(HttpStatus.OK);
+//        }
+//        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//    }
 
 }

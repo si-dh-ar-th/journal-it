@@ -31,4 +31,9 @@ public class UserService {
         userRepository.deleteById(journalId);
     }
 
+    public User findByUserName(String username){
+        Optional<User> user = userRepository.findByUserName(username);
+        return user.orElse(null);
+    }
+
 }
