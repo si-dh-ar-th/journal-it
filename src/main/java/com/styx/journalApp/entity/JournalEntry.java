@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 
 @Document(collection = "journalEntry")
 @Data   // Combined annotation for @Setter, @Getter, @RequiredArgsConstructor, @ToString, @EqualsAndHashCode, and @Value
+@NoArgsConstructor
 //@NoArgsConstructor        constructor with no arguments
 //@AllArgsConstructor       constructor with all arguments
 //@ToString                 not entirely sure
