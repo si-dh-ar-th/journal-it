@@ -20,7 +20,7 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public void saveEntry(User user) {
+    public void saveExistingUser(User user) {
         userRepository.save(user);
     }
 

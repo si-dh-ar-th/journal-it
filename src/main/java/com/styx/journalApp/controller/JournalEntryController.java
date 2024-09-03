@@ -8,6 +8,8 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,8 +25,10 @@ public class JournalEntryController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/{userName}")
-    public ResponseEntity<?> getAllJournalsOfUser(@PathVariable String userName){
+    @GetMapping
+    public ResponseEntity<?> getAllJournalsOfUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
         User user = userService.findByUserName(userName);
         List<JournalEntry> allEntries = user.getJournalEntries();
         if(allEntries != null && !allEntries.isEmpty()){
@@ -33,17 +37,19 @@ public class JournalEntryController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/id/{journalId}")
-    public ResponseEntity<JournalEntry> getJournalById(@PathVariable ObjectId journalId){
-        Optional<JournalEntry> entryById = journalEntryService.getEntryById(journalId);
-        if(entryById.isPresent()){
-            return new ResponseEntity<>(entryById.get(), HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
+//    @GetMapping("/id/{journalId}")
+//    public ResponseEntity<JournalEntry> getJournalById(@PathVariable ObjectId journalId){
+//        Optional<JournalEntry> entryById = journalEntryService.getEntryById(journalId);
+//        if(entryById.isPresent()){
+//            return new ResponseEntity<>(entryById.get(), HttpStatus.OK);
+//        }
+//        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//    }
 
-    @PostMapping("/{userName}")
-    public  ResponseEntity<?> createJournal(@RequestBody JournalEntry journalEntry, @PathVariable String userName){
+    @PostMapping
+    public  ResponseEntity<?> createJournal(@RequestBody JournalEntry journalEntry){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
         try {
             journalEntryService.saveEntry(journalEntry, userName);
             return new ResponseEntity<>(journalEntry, HttpStatus.CREATED);
