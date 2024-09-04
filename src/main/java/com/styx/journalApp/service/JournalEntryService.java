@@ -22,12 +22,17 @@ public class JournalEntryService {
     private UserService userService;
 
     @Transactional
-    public void saveEntry(JournalEntry journalEntry, String userName) {
-        User user = userService.findByUserName(userName);
-        journalEntry.setDate(LocalDateTime.now());
-        JournalEntry savedEntry = journalEntryRepository.save(journalEntry);
-        user.getJournalEntries().add(savedEntry);
-        userService.saveExistingUser(user);
+    public void saveEntry(JournalEntry journalEntry, String userName) throws Exception {
+        try {
+            User user = userService.findByUserName(userName);
+            journalEntry.setDate(LocalDateTime.now());
+            JournalEntry savedEntry = journalEntryRepository.save(journalEntry);
+            user.getJournalEntries().add(savedEntry);
+            userService.saveExistingUser(user);
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+            throw new RuntimeException("Error while saving journal entry : ", e.getCause());
+        }
     }
 
     public void saveEntry(JournalEntry journalEntry) {
@@ -44,11 +49,17 @@ public class JournalEntryService {
     }
 
     @Transactional
-    public void deleteEntryById(ObjectId journalId, String userName){
-        User user = userService.findByUserName(userName);
-        user.getJournalEntries().removeIf(x -> x.getId().equals(journalId));
-        userService.saveExistingUser(user);
-        journalEntryRepository.deleteById(journalId);
+    public void deleteUserJournal(ObjectId journalId, String userName){
+        try {
+            User user = userService.findByUserName(userName);
+            user.getJournalEntries().removeIf(x -> x.getId().equals(journalId));
+            userService.saveExistingUser(user);
+            journalEntryRepository.deleteById(journalId);
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+            throw new RuntimeException("Error occured while deleting journal entry : ", e.getCause());
+        }
+
     }
 
 }

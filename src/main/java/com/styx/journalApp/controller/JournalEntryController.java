@@ -96,7 +96,7 @@ public class JournalEntryController {
         if(entryById != null){
             List<JournalEntry> filteredEntries = userService.findByUserName(userName).getJournalEntries().stream().filter(x -> x.getId().equals(journalId)).collect(Collectors.toList());
             if(!filteredEntries.isEmpty()){
-                journalEntryService.deleteEntryById(journalId, userName);
+                journalEntryService.deleteUserJournal(journalId, userName);
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             } else{
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
