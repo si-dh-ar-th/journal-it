@@ -18,26 +18,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-//    admin level requests. removed from user
-
-//    @GetMapping
-//    public ResponseEntity<?> getAll(){
-//        List<User> allEntries = userService.getAllEntries();
-//        if(allEntries != null && !allEntries.isEmpty()){
-//            return new ResponseEntity<>(allEntries, HttpStatus.OK);
-//        }
-//        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//    }
-
-//    @GetMapping("/{userName}")
-//    public ResponseEntity<User> getUserByUserName(@PathVariable String userName){
-//        User user = userService.findByUserName(userName);
-//        if(user != null){
-//            return new ResponseEntity<>(user, HttpStatus.OK);
-//        }
-//        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//    }
-
     @PutMapping
     public ResponseEntity<User> updateUserById(@RequestBody User newData){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
