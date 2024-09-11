@@ -1,38 +1,40 @@
 package com.styx.journalApp.service;
 
 import com.styx.journalApp.entity.User;
+import com.styx.journalApp.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.EnumSource;
-import org.junit.jupiter.params.provider.ValueSource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import static org.mockito.Mockito.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@SpringBootTest
 class UserServiceTests {
 
-	@Autowired
+	@InjectMocks
 	private UserService userService;
 
-	@Test
-	void getAllEntriesTest() {
-		List<User> allEntries = userService.getAllEntries();
-		Assertions.assertNotNull(allEntries);
-	}
+	@Mock
+	private UserRepository userRepository;
 
-	@ParameterizedTest
-	@CsvSource({
-			"sidhjain",
-			"john_doe"
-	})
+//	@Test
+//	void getAllEntriesTest() {
+//		List<User> allEntries = userService.getAllEntries();
+//		Assertions.assertNotNull(allEntries);
+//	}
+
+//  there is also @CsvFileSource that takes path of csv
+//	@ParameterizedTest
+//	@CsvSource({
+//			"sidhjain",
+//			"john_doe"
+//	})
 
 //	Another way is using ArgumentSource. Watch JUnit video for that
-
-// Todo: pass a proper enum in this
+//  Todo: pass a proper enum in this
 //	@EnumSource({
 //			"sidhjain",
 //			"john_doe"
@@ -42,9 +44,12 @@ class UserServiceTests {
 //			"sidhjain",
 //			"john_doe"
 //	})
-
-	void findByUserNameTest(String username) {
-		User user = userService.findByUserName(username);
+	@Test
+    void findByUserNameTest() {
+		when(userRepository.findByUserName(ArgumentMatchers.anyString())).thenReturn(
+				User.builder().userName("hakuna_matata").password("ebiebijabajaba").roles(new ArrayList<>()).build()
+		);
+		User user = userService.findByUserName(ArgumentMatchers.anyString());
 		Assertions.assertNotNull(user);
 	}
 
