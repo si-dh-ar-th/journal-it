@@ -3,14 +3,14 @@ package com.styx.journalApp.service;
 import com.styx.journalApp.entity.User;
 import com.styx.journalApp.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.*;
+
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 class UserServiceTests {
 
@@ -44,6 +44,12 @@ class UserServiceTests {
 //			"sidhjain",
 //			"john_doe"
 //	})
+
+	@BeforeEach
+	void initialize(){
+		MockitoAnnotations.initMocks(this);
+	}
+
 	@Test
     void findByUserNameTest() {
 		when(userRepository.findByUserName(ArgumentMatchers.anyString())).thenReturn(

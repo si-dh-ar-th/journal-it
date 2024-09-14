@@ -49,8 +49,7 @@ public class UserService {
     }
 
     public User findByUserName(String username){
-        Optional<User> user = userRepository.findByUserName(username);
-        return user.orElse(null);
+        return userRepository.findByUserName(username);
     }
 
 }
