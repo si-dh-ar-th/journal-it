@@ -35,12 +35,12 @@ public class AdminController {
         }
     }
 
-//    @GetMapping("/{userName}")
-//    public ResponseEntity<User> getUserByUserName(@PathVariable String userName){
-//        User user = userService.findByUserName(userName);
-//        if(user != null){
-//            return new ResponseEntity<>(user, HttpStatus.OK);
-//        }
-//        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//    }
+    @GetMapping("/user/{userName}")
+    public ResponseEntity<User> getUserByUserName(@PathVariable String userName){
+        User user = userService.findByUserName(userName);
+        if(user != null){
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 }
