@@ -1,7 +1,7 @@
 package com.styx.journalApp.entity;
 
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -12,9 +12,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.ArrayList;
 import java.util.List;
 
+@Builder
 @Document(collection = "users")
 @Data   // Combined annotation for @Setter, @Getter, @RequiredArgsConstructor, @ToString, @EqualsAndHashCode, and @Value
-@NoArgsConstructor
 public class User {
     @Id
     private ObjectId id;
@@ -25,5 +25,5 @@ public class User {
     private String password;
     @DBRef
     private List<JournalEntry> journalEntries = new ArrayList<>();
-    private List<String> roles;
+    private List<String> roles = new ArrayList<>();
 }
