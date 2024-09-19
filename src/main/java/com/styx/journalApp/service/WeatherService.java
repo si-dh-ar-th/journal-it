@@ -1,7 +1,9 @@
 package com.styx.journalApp.service;
 
+import com.styx.journalApp.api.response.WeatherResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -15,14 +17,14 @@ public class WeatherService {
     @Autowired
     private RestTemplate restTemplate;
 
-    public String getCurrentWeather(String location){
-        String endpoint = "/current.json/key={{API_KEY}}&q={{location}}".replace("{{API_KEY}}", API_KEY)
+    public WeatherResponse getCurrentWeather(String location){
+        String endpoint = "/current.json?key={{API_KEY}}&q={{location}}".replace("{{API_KEY}}", API_KEY)
                                                                         .replace("{{location}}", location);
         String requestUrl = baseUri + endpoint;
 
-//        restTemplate.exchange(requestUrl, HttpMethod.GET, )
-
-        return "";
+//      deserialization of response to pojo
+        ResponseEntity<WeatherResponse> response = restTemplate.exchange(requestUrl, HttpMethod.GET, null, WeatherResponse.class);
+        return response.getBody();
     }
 
 }
