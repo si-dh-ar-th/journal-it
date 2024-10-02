@@ -1,5 +1,6 @@
 package com.styx.journalApp.entity;
 
+import com.styx.journalApp.resources.Sentiment;
 import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -22,4 +23,5 @@ public class JournalEntry {
     private String title;
     private String description;
     private LocalDateTime date;
+    private Sentiment sentiment;
 }
