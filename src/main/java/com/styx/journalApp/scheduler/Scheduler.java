@@ -6,7 +6,6 @@ import com.styx.journalApp.entity.User;
 import com.styx.journalApp.repository.UserMongoTemplateRepository;
 import com.styx.journalApp.resources.Sentiment;
 import com.styx.journalApp.service.EmailService;
-import com.styx.journalApp.service.SentimentAnalysisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 
@@ -24,9 +23,6 @@ public class Scheduler {
 
     @Autowired
     private UserMongoTemplateRepository userRepository;
-
-    @Autowired
-    private SentimentAnalysisService sentimentAnalysisService;
 
     @Autowired
     private AppCache appCache;
