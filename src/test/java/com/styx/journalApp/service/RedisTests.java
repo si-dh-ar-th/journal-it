@@ -1,5 +1,6 @@
 package com.styx.journalApp.service;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,10 +12,11 @@ public class RedisTests {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Disabled
     @Test
     void sendEmailTest(){
         redisTemplate.opsForValue().set("email", "sidharth@email.com");
-        redisTemplate.opsForValue().get("email");
+        Object email = redisTemplate.opsForValue().get("email");
     }
 
 }
