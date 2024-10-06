@@ -1,6 +1,5 @@
 package com.styx.journalApp.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +28,11 @@ public class RedisService {
 
     public void set(String key, Object value, Long ttl) {
         try {
-            redisTemplate.opsForValue().set(key, value, ttl, TimeUnit.SECONDS);
+            ObjectMapper objectMapper = new ObjectMapper();
+            String jsonValue = objectMapper.writeValueAsString(value);
+            redisTemplate.opsForValue().set(key, jsonValue, ttl, TimeUnit.SECONDS);
         } catch (Exception e) {
-            log.error("Exception while setting from Redis: ", e);
+            log.error("Exception while setting in Redis: ", e);
         }
     }
 }
