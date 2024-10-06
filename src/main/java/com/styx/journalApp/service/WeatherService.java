@@ -21,12 +21,23 @@ public class WeatherService {
     @Autowired
     private AppCache appCacheBean;
 
-    public WeatherResponse getCurrentWeather(String location){
-        String requestUrl = appCacheBean.appCache.get(WeatherAPI.CURRENT_WEATHER_JSON.toString()).replace(PlaceHolders.API_KEY, API_KEY).replace(PlaceHolders.LOCATION, location);
+    @Autowired
+    private RedisService redisService;
 
-//      deserialization of response to pojo
-        ResponseEntity<WeatherResponse> response = restTemplate.exchange(requestUrl, HttpMethod.GET, null, WeatherResponse.class);
-        return response.getBody();
+    public WeatherResponse getCurrentWeather(String location){
+        WeatherResponse weatherResponse = redisService.get("weather_of_" + location.split(",")[0].toLowerCase(), WeatherResponse.class);
+        if(weatherResponse != null){
+            return weatherResponse;
+        } else{
+            String requestUrl = appCacheBean.appCache.get(WeatherAPI.CURRENT_WEATHER_JSON.toString()).replace(PlaceHolders.API_KEY, API_KEY).replace(PlaceHolders.LOCATION, location);
+            // deserialization of response to pojo
+            ResponseEntity<WeatherResponse> response = restTemplate.exchange(requestUrl, HttpMethod.GET, null, WeatherResponse.class);
+            WeatherResponse body = response.getBody();
+            if(body != null){
+                redisService.set("weather_of_" + location.split(",")[0].toLowerCase(), body, 300L);
+            }
+            return body;
+        }
     }
 
 }

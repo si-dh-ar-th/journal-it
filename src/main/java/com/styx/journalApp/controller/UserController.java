@@ -44,7 +44,7 @@ public class UserController {
     @GetMapping
     public ResponseEntity<?> greeting(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        WeatherResponse currentWeather = weatherService.getCurrentWeather("Delhi");
+        WeatherResponse currentWeather = weatherService.getCurrentWeather("Delhi, India");
         String greeting = "";
         if(currentWeather != null && currentWeather.getCurrent().getTemperature() != currentWeather.getCurrent().getFeelsLike()){
             greeting = ", Today's actual temperature is: " + currentWeather.getCurrent().getTemperature() + " but it feels like: " + currentWeather.getCurrent().getFeelsLike();
