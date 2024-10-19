@@ -3,6 +3,7 @@ package com.styx.journalApp.controller;
 import com.styx.journalApp.entity.User;
 import com.styx.journalApp.service.CustomUserDetailsService;
 import com.styx.journalApp.service.UserService;
+import com.styx.journalApp.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,9 @@ public class PublicController {
     @Autowired
     private CustomUserDetailsService userDetailsService;
 
+    @Autowired
+    private JwtUtils jwtUtils;
+
     @GetMapping("/health-check")
     public ResponseEntity<String> healthCheck(){
         return new ResponseEntity<>("server is working", HttpStatus.OK);
@@ -46,6 +50,8 @@ public class PublicController {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUserName(), user.getPassword()));
             UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUserName());
+            String jwt = jwtUtils.generateToken(userDetails.getUsername());
+            return new ResponseEntity<>(jwt, HttpStatus.CREATED);
         }catch (Exception e){
             log.error("Exception while generating jwt token ", e);
             return new ResponseEntity<>("Incorrect username or password", HttpStatus.BAD_REQUEST);
